@@ -12,7 +12,7 @@
   </appender>
 
   <appender name="ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>truConnectBackend.log</File>
+    <File>webOnTheGoBackend.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <FileNamePattern>/logs/webOnTheGoBackend.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
