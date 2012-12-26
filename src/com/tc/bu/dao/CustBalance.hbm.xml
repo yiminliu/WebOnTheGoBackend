@@ -24,7 +24,7 @@
       <return-property name="totalCharges" column="total_charges" />
       <return-property name="realBalance" column="real_balance" />
     </return>
-    { call MVNE_KENAN_FETCH_PKG.GET_CUST_BALANCE( ?, :in_user_name, :in_account_no ) }
+    { call MVNA_KENAN_FETCH_PKG.GET_CUST_BALANCE( ?, :in_user_name, :in_account_no ) }
   </sql-query>
 
 </hibernate-mapping>	

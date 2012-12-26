@@ -16,7 +16,7 @@
       <return-property name="accountno" column="account_no" />
       <return-property name="realBalance" column="real_balance" />
     </return>
-    { call MVNE_KENAN_FETCH_PKG.SP_FETCH_ACCTS_TO_CHARGE(?) }
+    { call MVNA_KENAN_FETCH_PKG.SP_FETCH_ACCTS_TO_CHARGE(?) }
   </sql-query>
 
   <sql-query name="sp_fetch_accts_to_hotline" callable="true">
@@ -24,7 +24,7 @@
       <return-property name="mdn" column="mdn" />
       <return-property name="accountno" column="account_no" />
     </return>
-    { call MVNE_KENAN_FETCH_PKG.SP_FETCH_ACCTS_TO_HOTLINE(?) }
+    { call MVNA_KENAN_FETCH_PKG.SP_FETCH_ACCTS_TO_HOTLINE(?) }
   </sql-query>
 
   <sql-query name="sp_fetch_accts_to_restore" callable="true">
@@ -32,7 +32,7 @@
       <return-property name="mdn" column="mdn" />
       <return-property name="accountno" column="account_no" />
     </return>
-    { call MVNE_KENAN_FETCH_PKG.SP_FETCH_ACCTS_TO_RESTORE(?) }
+    { call MVNA_KENAN_FETCH_PKG.SP_FETCH_ACCTS_TO_RESTORE(?) }
   </sql-query>
 
 </hibernate-mapping>

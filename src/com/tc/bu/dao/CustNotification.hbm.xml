@@ -18,7 +18,7 @@
       <return-property name="mvnemsg" column="mvnemsg" />
       <return-property name="mvnemsgcode" column="mvnemsgcode" />
     </return>
-    { call MVNE_API_PKG.UPD_CUST_NOTIFICATION(?, :notification_id,:cust_id,:account_no,:mdn,:esn,:to,:cc,:bcc,:from,:subject,:body,:sent_date) }
+    { call MVNA_API_PKG.UPD_CUST_NOTIFICATION(?, :notification_id,:cust_id,:account_no,:mdn,:esn,:to,:cc,:bcc,:from,:subject,:body,:sent_date) }
   </sql-query>
 
 </hibernate-mapping>
