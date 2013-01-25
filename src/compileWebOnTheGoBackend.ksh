@@ -3,10 +3,10 @@
 
 ###############################################################################
 ##
-##                          TruConnect Backend Process
+##                          Webonthego Backend Process
 ##
 ##    -Overview
-##    -This script is designed to run TruConnect's backend processes
+##    -This script is designed to run Webonthego's backend processes
 ##    
 ##    -ChangeLog
 ##    -6/6/2011-dta- Added this script
@@ -15,12 +15,11 @@
 ###############################################################################
 
 
-PROJECT=$HOME/tscp/mvne/truconnect
-
+PROJECT=$HOME/tscp/mvne/webonthego-test
 CLASSPATH=$CLASSPATH:$PROJECT/bin/
 CLASSPATH=$CLASSPATH:$PROJECT/lib/ojdbc14.jar
-#CLASSPATH=$CLASSPATH:$PROJECT/lib/TSCPMVNE-API-2.0.jar
 CLASSPATH=$CLASSPATH:$PROJECT/lib/TSCPMVNA-API.jar
+CLASSPATH=$CLASSPATH:$PROJECT/lib/webonthegobackend.jar
 CLASSPATH=$CLASSPATH:$PROJECT/lib/slf4j-api-1.6.1.jar
 CLASSPATH=$CLASSPATH:$PROJECT/lib/logback-classic-0.9.30.jar
 CLASSPATH=$CLASSPATH:$PROJECT/lib/logback-core-0.9.30.jar
@@ -40,4 +39,4 @@ echo 'Classpath:'
 echo $CLASSPATH
 
 #javac -classpath $CLASSPATH -d bin $1
-javac -cp $CLASSPATH -d ../bin com/tc/bu/TruConnectBackend.java
+javac -cp $CLASSPATH -d ../bin com/tc/bu/WebOnTheGoBackend.java
