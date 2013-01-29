@@ -7,7 +7,6 @@
 
   <session-factory>
     <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
-    <!-- TEST -->
     <!-- <property name="connection.url">jdbc:oracle:thin:@uscael200:1521:K11MVNOT</property>-->
     <property name="connection.url">jdbc:oracle:thin:@uscaelmux18:1521:K11MVNO</property> 
     <property name="connection.username">TSCPMVNA</property>

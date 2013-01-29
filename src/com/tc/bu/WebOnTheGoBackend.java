@@ -9,11 +9,11 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
-import com.tc.bu.util.TscpMvnaWebService;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.WebServiceException;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -36,9 +36,14 @@ import com.tscp.mvne.PaymentUnitResponse;
 import com.tscp.mvne.TSCPMVNA;
 import com.tscp.mvne.TSCPMVNAService;
 
+
 @SuppressWarnings("unchecked")
 public class WebOnTheGoBackend {
 	
+	
+  private static final String wsdlLocation = "http://10.10.30.190:8080/TSCPMVNA/TSCPMVNAService?WSDL";
+  private static final String nameSpace = "http://mvne.tscp.com/";
+  private static final String serviceName = "TSCPMVNAService";	
   private static final String EMAIL_ERROR = "truconnect_alerts@telscape.net";
   private static final Logger logger = LoggerFactory.getLogger(WebOnTheGoBackend.class);
   private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
@@ -76,7 +81,8 @@ public class WebOnTheGoBackend {
 	    catch (Exception exception) {
 		   	logger.error(exception.getMessage()) ;	      
 	    }
-	   	logger.info("Finished topup charge process.");
+	    logger.info("Finished topup charge process.");
+	    System.out.println("");
   }
   
   /**
@@ -110,7 +116,7 @@ public class WebOnTheGoBackend {
           }      
       } 
       catch (CustomerException cust_ex) {
-            logger.warn("Skipping Account " + account.getAccountno() + "Error was " + cust_ex.getMessage(), cust_ex);
+            logger.warn("Skipping Account " + account.getAccountNo() + "Error was " + cust_ex.getMessage(), cust_ex);
             ProcessException process_ex = new ProcessException("Payment Processing", cust_ex.getMessage(), cust_ex);
             process_ex.setAccountNo(Integer.toString(tscpMvneAccount.getAccountNo()));
             process_ex.setMdn(account.getMdn());
@@ -122,7 +128,7 @@ public class WebOnTheGoBackend {
         // previously sent emails to the customer from here. This is now done in TSCPMVNE.TruConnect.submitPaymentById
         logger.error("Error:: " + process_ex.getMessage() + ". Formerly we sent emails here...server is handling this action now. ");
       }
-      logger.info("Done with Account {}", account.getAccountno());
+      logger.info("Done with Account {}", account.getAccountNo());
     }    
   }
 
@@ -130,7 +136,7 @@ public class WebOnTheGoBackend {
   private void manualChargeAccount(int accountNo) {
 	  List<Account> accountList = Collections.emptyList();  
       Account acct = new Account();
-	  acct.setAccountno(accountNo);
+	  acct.setAccountNo(accountNo);
 	  accountList.add(acct);
 	  chargeAccounts(accountList);
   }	
@@ -139,24 +145,24 @@ public class WebOnTheGoBackend {
 	Customer customer = null;  
     ProcessException process_ex = null;
     try {
-      logger.info("Getting Customer Info for Account " + account.getAccountno());
-      customer = getCustomerFromAccount(account.getAccountno());
+      logger.info("Getting Customer Info for Account " + account.getAccountNo());
+      customer = getCustomerFromAccount(account.getAccountNo());
       if (customer.getId() == 0) {
-        throw new CustomerException("Customer Info not be found for Account " + account.getAccountno());
+        throw new CustomerException("Customer Info not be found for Account " + account.getAccountNo());
       }
     } catch (CustomerException cust_ex) {
       process_ex = new ProcessException("CustomerInformation Retrieval", cust_ex);
     }
     try {
       logger.debug("Creating TSCPMVNE.Account Object for customer " + customer.getId());
-      tscpMvneAccount = getAccount(account.getAccountno());
+      tscpMvneAccount = getAccount(account.getAccountNo());
     } catch (CustomerException cust_ex) {
       if (process_ex == null) {
         process_ex = new ProcessException("AccountInformation Retrieval", cust_ex);
       }
     }
     if (process_ex != null) {
-      process_ex.setAccountNo(Integer.toString(account.getAccountno()));
+      process_ex.setAccountNo(Integer.toString(account.getAccountNo()));
       process_ex.setMdn(account.getMdn());
       process_ex.setAccount(tscpMvneAccount);
       process_ex.setNetworkInfo(networkInfo);
@@ -279,9 +285,9 @@ public class WebOnTheGoBackend {
             logger.info("   ...{} accounts will be topped-up", accountList.size());
         session.getTransaction().commit();
     }   
-    catch(Exception e){
-    	session.getTransaction().rollback();
-    	logger.error(e.getMessage());
+    catch(HibernateException e){
+    	//session.getTransaction().rollback();
+    	logger.error("Failed on executing sp_fetch_accts_to_charge, due to: " +e.getMessage());
     }
     return accountList;
   }
@@ -311,8 +317,9 @@ public class WebOnTheGoBackend {
   /******************** Util Methods ***********************/
   private void init(){
 	  try {
-	      service = new TSCPMVNAService(new URL(TscpMvnaWebService.WSDL.toString()), new QName(TscpMvnaWebService.NAMESPACE.toString(), TscpMvnaWebService.SERVICENAME.toString()));
-	      port = service.getTSCPMVNAPort();
+	      //service = new TSCPMVNAService(new URL(TscpMvnaWebService.WSDL.toString()), new QName(TscpMvnaWebService.NAMESPACE.toString(), TscpMvnaWebService.SERVICENAME.toString()));
+		  service = new TSCPMVNAService(new URL(wsdlLocation), new QName(nameSpace, serviceName));
+		  port = service.getTSCPMVNAPort();
 	  } 
 	  catch (MalformedURLException url_ex) {
 	      logger.error("Unable to reach webservice. {}", url_ex.getMessage());

@@ -1,7 +1,7 @@
 package com.tc.bu.dao;
 
 public class Account {
-  int accountno;
+  int accountNo;
   String mdn;
 
   String realBalance;
@@ -10,12 +10,12 @@ public class Account {
 
   }
 
-  public int getAccountno() {
-    return accountno;
+  public int getAccountNo() {
+    return accountNo;
   }
 
-  public void setAccountno(int accountno) {
-    this.accountno = accountno;
+  public void setAccountNo(int accountNo) {
+    this.accountNo = accountNo;
   }
 
   public String getMdn() {
@@ -37,14 +37,14 @@ public class Account {
   @Override
   public String toString() {
     // TODO Auto-generated method stub
-    return "AccountNo :: " + getAccountno() + " || MDN :: " + getMdn() + " || REAL_BALANCE :: " + getRealBalance();
+    return "AccountNo :: " + getAccountNo() + " || MDN :: " + getMdn() + " || REAL_BALANCE :: " + getRealBalance();
   }
 
   @Override
   public boolean equals(Object obj) {
     // TODO Auto-generated method stub
     if (obj instanceof Account) {
-      if (((Account) obj).getAccountno() == getAccountno() && ((Account) obj).getMdn().equals(getMdn())
+      if (((Account) obj).getAccountNo() == getAccountNo() && ((Account) obj).getMdn().equals(getMdn())
           && ((Account) obj).getRealBalance().equals(getRealBalance())) {
         return true;
       }
