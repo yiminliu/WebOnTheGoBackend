@@ -12,9 +12,9 @@
   </appender>
 
   <appender name="ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <File>/logs/webOnTheGoBackend.log</File>
+    <File>logs/webOnTheGoBackend.log</File>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <FileNamePattern>/logs/webOnTheGoBackend.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+      <FileNamePattern>logs/archive/webOnTheGoBackend.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
       <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
         <maxFileSize>5MB</maxFileSize>
       </timeBasedFileNamingAndTriggeringPolicy>
@@ -23,8 +23,22 @@
       <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level: %msg%n</pattern>
     </encoder>
   </appender>
+  
+  <appender name="ERROR_ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>logs/webOnTheGoBackend-error.log</File>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <FileNamePattern>logs/archive/webOnTheGoBackend-error.%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>5MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level: %msg%n</pattern>
+    </encoder>
+  </appender>
+  
 
-  <logger name="tcbu" level="ALL">
+  <logger name="com.tc.bu" level="INFO">
     <appender-ref ref="ROLLINGFILE" />
   </logger>
 
