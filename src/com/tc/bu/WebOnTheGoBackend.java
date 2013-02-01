@@ -79,10 +79,9 @@ public class WebOnTheGoBackend {
 	    catch (Exception exception) {
 		   	logger.error("Error occured in the topup process {}.", exception.getMessage()) ;	      
 	    }
-	    long totalTime = System.currentTimeMillis() - startTime;
-	    logger.info("Total time spent to process topup = " +  - totalTime);
+	    logger.info("Total time spent to process topup: {} (ms)",  System.currentTimeMillis() - startTime);
 	    logger.info("********** Finished topup charge process **********");
-	    System.out.println("");
+	    System.out.println("\r\n");
   }
   
   /**
