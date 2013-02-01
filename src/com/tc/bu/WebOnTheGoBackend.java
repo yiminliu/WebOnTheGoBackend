@@ -61,6 +61,7 @@ public class WebOnTheGoBackend {
 		WebOnTheGoBackend wotgbe = new WebOnTheGoBackend();
 		int acctNo = -100;
 		logger.info("********** Start topup charge process *************");
+		long startTime = System.currentTimeMillis();
 	    try {
 	      if(acctNo < 0) 
 	    	  wotgbe.chargeAccounts(wotgbe.getAccountToChargeList());
@@ -78,6 +79,8 @@ public class WebOnTheGoBackend {
 	    catch (Exception exception) {
 		   	logger.error("Error occured in the topup process {}.", exception.getMessage()) ;	      
 	    }
+	    long totalTime = System.currentTimeMillis() - startTime;
+	    logger.info("Total time spent to process topup = " +  - totalTime);
 	    logger.info("********** Finished topup charge process **********");
 	    System.out.println("");
   }
