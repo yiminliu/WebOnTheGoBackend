@@ -16,6 +16,7 @@ import javax.xml.ws.WebServiceException;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,6 @@ import com.tc.bu.dao.Account;
 import com.tc.bu.db.HibernateUtil;
 import com.tc.bu.exception.CustomerException;
 import com.tc.bu.exception.PaymentException;
-import com.tc.bu.exception.ProcessException;
 import com.tc.bu.util.email.EmailHelper;
 import com.tc.bu.util.email.MailClient;
 import com.tc.bu.util.email.Recipient;
@@ -31,7 +31,6 @@ import com.tscp.mvne.CreditCard;
 import com.tscp.mvne.CustPmtMap;
 import com.tscp.mvne.CustTopUp;
 import com.tscp.mvne.Customer;
-import com.tscp.mvne.NetworkInfo;
 import com.tscp.mvne.PaymentUnitResponse;
 import com.tscp.mvne.TSCPMVNA;
 import com.tscp.mvne.TSCPMVNAService;
@@ -40,12 +39,14 @@ import com.tscp.mvne.TSCPMVNAService;
 @SuppressWarnings("unchecked")
 public class WebOnTheGoBackend {
 	
-	
   private static final String wsdlLocation = "http://10.10.30.190:8080/TSCPMVNA/TSCPMVNAService?WSDL";
   private static final String nameSpace = "http://mvne.tscp.com/";
   private static final String serviceName = "TSCPMVNAService";	
-  private static final String EMAIL_ERROR = "truconnect_alerts@telscape.net";
+
+  private static final String EMAIL_ERROR = "WOTG_Alerts@telscape.net";
+  
   private static final Logger logger = LoggerFactory.getLogger(WebOnTheGoBackend.class);
+  
   private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
   private static final SimpleDateFormat legibleDate = new SimpleDateFormat("MM/dd/yyyy");
   private static final DecimalFormat df = new DecimalFormat("0.00");
