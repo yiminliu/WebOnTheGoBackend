@@ -9,8 +9,8 @@ public class EmailHelper {
     header.append("<html>\n");
     header.append("<body>\n");
     header.append("    <div style=\"width:750px; margin:0px auto;\" \n");
-    header.append("    <a href='https://manage.truconnect.com/TruConnect/login'> \n");
-    header.append("    <img class='logo' src='https://activate.truconnect.com/TruConnect/static/images/logo_s1.jpg'> \n");
+    //header.append("    <img class='logo' src='https://account.webonthego.com/static/images/logo.png'> \n");
+    header.append("    <img class='logo' src='https://account.webonthego.com/static/images/favicon.ico'> \n");
     header.append("    </a> \n");
     header.append("    <br>&nbsp;</br> \n");
     return header.toString();
@@ -22,7 +22,7 @@ public class EmailHelper {
     footer.append("    <p> \n");
     footer.append("        Sincerely, \n");
     footer.append("    <br> \n");
-    footer.append("    <b>TruConnect</b> \n");
+    footer.append("    <b>Web on the Go</b> \n");
     footer.append("    </p> \n");
     footer.append("    </div> \n");
     footer.append("    <br> \n");
@@ -32,10 +32,10 @@ public class EmailHelper {
     footer.append("        <b>Please Do Not Reply to this Message</b> \n");
     footer
         .append("        <br>All replies are autmatically deleted. For questions regarding this message, refer to the contact information listed above.</br> \n");
-    footer
-        .append("        <p><a href=\"www.truconnect.com\">&copy2011 TruConnect Intellectual Property.</a> All rights reserved. TruConnect, the TruConnect logo and all other TruConnect marks contained herein are trademarks of TruConnect Intellectual Property and/or TruConnect affiliated companies. Subsidiaries and affiliates of TruConnect LLC provide products and services under the TruConnect Brand</p> \n");
-    footer.append("        <p><a href=\"www.truconnect.com\">Privacy Policy</a></p> \n");
-    footer.append("        <p>Questions? Please visit the <a href=\"www.truconnect.com/support\">Support Page</a></p> \n");
+    //footer
+        //.append("        <p><a href=\"www.Web on the Go.com\">&copy2011 Web on the Go Intellectual Property.</a> All rights reserved. Web on the Go, the Web on the Go logo and all other Web on the Go marks contained herein are trademarks of Web on the Go Intellectual Property and/or Web on the Go affiliated companies. Subsidiaries and affiliates of Web on the Go LLC provide products and services under the Web on the Go Brand</p> \n");
+    footer.append("        <p><a href=\"www.webonthego.com\">Privacy Policy</a></p> \n");
+    footer.append("        <p>Questions? Please visit the <a href=\"https://account.webonthego.com/support\">Support Page</a></p> \n");
     footer.append("    </div> \n");
     footer.append("</div> \n");
     footer.append("</body> \n");
@@ -47,7 +47,7 @@ public class EmailHelper {
       String paymentMethod, String paymentSource, String paymentDate, String balance) {
     StringBuffer body = new StringBuffer();
     body.append("<div style=\"color:#2554C7; font-size:1.25em; background:#EAEAEA\"> \n");
-    body.append("<b>Your TruConnect Payment Processed</b> \n");
+    body.append("<b>Your Web on the Go Payment Processed</b> \n");
     body.append("</div> \n");
     body.append("<p> \n");
     body.append("   <b>Dear " + userName + ",</b> \n");
@@ -78,19 +78,19 @@ public class EmailHelper {
     body.append("</p> \n");
     body.append("");
     body.append("<p> \n");
-    body.append("   <a href=\"https://manage.truconnect.com/truconnect/login\">Log in</a> and manage your billing and payment information \n");
+    body.append("   <a href=\"https://account.webonthego.com/login\">Log in</a> and manage your billing and payment information \n");
     body.append("</p> \n");
     body.append("<p> \n");
-    body.append("   Thank you for choosing TruConnect for your wireless and data needs. We value your business and look forward to serving you! \n");
+    body.append("   Thank you for choosing Web on the Go for your wireless and data needs. We value your business and look forward to serving you! \n");
     body.append("</p> \n");
     return body.toString();
   }
 
-  public static String getPaymentFailureBody(String userName, String accountNumber, String tn, String esn, String paymentAmount, String paymentMethod,
+  public static String getPaymentFailureBody_save(String userName, String accountNumber, String tn, String esn, String paymentAmount, String paymentMethod,
       String paymentSource, String paymentDate, String comments, String remainingBalance) {
     StringBuffer body = new StringBuffer();
     body.append("<div style=\"color:#306EFF; font-size:1.25em; background:#EAEAEA\">\n ");
-    body.append("<b>Your TruConnect Payment Failed to Process</b>\n ");
+    body.append("<b>Your Web on the Go Payment Failed to Process</b>\n ");
     body.append("</div>\n ");
     body.append("<p>\n ");
     body.append("   <b>Dear " + userName + ",</b>\n ");
@@ -121,7 +121,7 @@ public class EmailHelper {
     body.append("</p>\n ");
     body.append("\n ");
     body.append("<p>\n ");
-    body.append("   <a href=\"https://manage.truconnect.com/truconnect/login\">Log in</a> and manage your billing and payment information\n ");
+    body.append("   <a href=\"https://account.webonthego.com/login\">Log in</a> and manage your billing and payment information\n ");
     body.append("</p>\n ");
     body.append("<p>\n ");
     body.append("   Please make any necessary modifications to your payment information and add funds to your account to avoid service interruption. Your remaining balance is <b>"
@@ -129,11 +129,47 @@ public class EmailHelper {
     body.append("</p>\n ");
     return body.toString();
   }
+  
+  public static String getPaymentFailureBody(String userName, String accountNumber, String tn, String esn, String paymentAmount, String paymentMethod,
+	      String paymentSource, String paymentDate, String comments, String remainingBalance) {
+	    StringBuffer body = new StringBuffer();
+	    body.append("<div style=\"color:#306EFF; font-size:1.25em; background:#EAEAEA\">\n ");
+	    body.append("<b>Web on the Go Payment Failed to Process</b>\n ");
+	    body.append("</div>\n ");
+	    body.append("<br/>\n ");
+	    body.append("   <table border=1>\n ");
+	    body.append("       <th>Account</th>\n ");
+	    body.append("       <th>TN</th>\n ");
+	    body.append("       <th>ESN</th>\n ");
+	    body.append("       <th>Amount</th>\n ");
+	    body.append("       <th>Balance</th>\n ");
+	    body.append("       <th>Payment Method</th>\n ");
+	    body.append("       <th>Payment Source</th>\n ");
+	    body.append("       <th>Payment Date</th>\n ");
+	    body.append("       <th>Comments</th>\n ");
+	    body.append("       <tr>\n ");
+	    body.append("           <td>" + accountNumber + "</td>\n ");
+	    body.append("           <td>" + tn + "</td> \n");
+	    body.append("           <td>" + esn + "</td> \n");
+	    body.append("           <td>$" + paymentAmount + "</td>\n ");
+	    body.append("           <td>$" + remainingBalance + "</td>\n ");
+	    body.append("           <td>" + paymentMethod + "</td>\n ");
+	    body.append("           <td>" + paymentSource + "</td>\n ");
+	    body.append("           <td>" + paymentDate + "</td>\n ");
+	    body.append("           <td>" + comments + "</td>\n ");
+	    body.append("       </tr>\n ");
+	    body.append("   </table>\n ");
+	    body.append("</p>\n ");
+	    body.append("\n ");
+	    body.append("<p>\n ");
+	    return body.toString();
+	  }
+
 
   public static String getSuspendedAccountNotification(String userName, String accountno, String mdn, String esn, String suspendDate) {
     StringBuffer body = new StringBuffer();
     body.append("<div style=\"color:#306EFF; font-size:1.25em; background:#EAEAEA\"> \n");
-    body.append("<b>Your TruConnect Service has been Suspended</b> \n");
+    body.append("<b>Your Web on the Go Service has been Suspended</b> \n");
     body.append("</div> \n");
     body.append("<p> \n");
     body.append("   <b>Dear " + userName + ",</b> \n");
@@ -158,10 +194,10 @@ public class EmailHelper {
     body.append("</p> \n");
     body.append(" \n");
     body.append("<p> \n");
-    body.append("   <a href=\"https://manage.truconnect.com/truconnect/login\">Log in</a> and manage your billing and payment information \n");
+    body.append("   <a href=\"https://account.webonthego.com/login\">Log in</a> and manage your billing and payment information \n");
     body.append("</p> \n");
     body.append("<p> \n");
-    body.append("   Thank you for choosing TruConnect for your wireless and data needs. We value your business and look forward to serving you! \n");
+    body.append("   Thank you for choosing Web on the Go for your wireless and data needs. We value your business and look forward to serving you! \n");
     body.append("</p>");
     return body.toString();
   }
@@ -169,7 +205,7 @@ public class EmailHelper {
   public static String getRestoredAccountNotification(String userName, String accountno, String mdn, String esn, String restoreDate) {
     StringBuffer body = new StringBuffer();
     body.append("<div style=\"color:#306EFF; font-size:1.25em; background:#EAEAEA\"> \n");
-    body.append("<b>Your TruConnect Service has been Restored</b> \n");
+    body.append("<b>Your Web on the Go Service has been Restored</b> \n");
     body.append("</div> \n");
     body.append("<p> \n");
     body.append("   <b>Dear " + userName + ",</b> \n");
@@ -193,10 +229,10 @@ public class EmailHelper {
     body.append("</p> \n");
     body.append(" \n");
     body.append("<p> \n");
-    body.append("   <a href=\"https://manage.truconnect.com/truconnect/login\">Log in</a> and manage your billing and payment information \n");
+    body.append("   <a href=\"https://account.webonthego.com/login\">Log in</a> and manage your billing and payment information \n");
     body.append("</p> \n");
     body.append("<p> \n");
-    body.append("   Thank you for choosing TruConnect for your wireless and data needs. We value your business and look forward to serving you! \n");
+    body.append("   Thank you for choosing Web on the Go for your wireless and data needs. We value your business and look forward to serving you! \n");
     body.append("</p>");
     return body.toString();
   }
@@ -204,7 +240,7 @@ public class EmailHelper {
   public static String getErrorBody(String userName, String accountno, String mdn, String esn, String action, String error) {
     StringBuffer body = new StringBuffer();
     body.append(" <div style=\"color:#306EFF; font-size:1.25em; background:#EAEAEA\"> ");
-    body.append(" <b>Your TruConnect Service has encountered an error</b> ");
+    body.append(" <b>Your Web on the Go Service has encountered an error</b> ");
     body.append(" </div> ");
     body.append(" <p> ");
     body.append("   <b>Dear " + userName + ",</b> ");
@@ -229,10 +265,10 @@ public class EmailHelper {
     body.append(" </p> ");
     body.append("  ");
     body.append(" <p> ");
-    body.append("   Please <a href=\"https://manage.truconnect.com/truconnect/login\">log in</a> and correct the issue at your earliest convenience or contact TruConnect customer service at 1-855-878-2666. ");
+    body.append("   Please <a href=\"https://account.webonthego.com/login\">log in</a> and correct the issue at your earliest convenience or contact Web on the Go customer service at 1-855-878-2666. ");
     body.append(" </p> ");
     body.append(" <p> ");
-    body.append("   Thank you for choosing TruConnect for your wireless and data needs. We value your business and look forward to serving you! ");
+    body.append("   Thank you for choosing Web on the Go for your wireless and data needs. We value your business and look forward to serving you! ");
     body.append(" </p> ");
 
     return body.toString();
@@ -241,7 +277,7 @@ public class EmailHelper {
   public static String getErrorBody(ProcessException process_ex) {
     StringBuffer body = new StringBuffer();
     body.append(" <div style=\"color:#306EFF; font-size:1.25em; background:#EAEAEA\"> ");
-    body.append(" <b>Your TruConnect Service has encountered an error</b> ");
+    body.append(" <b>Your Web on the Go Service has encountered an error</b> ");
     body.append(" </div> ");
     body.append(" <p> ");
     body.append("   <b>Dear " + process_ex.getAccount().getFirstname() + ",</b> ");
@@ -282,10 +318,10 @@ public class EmailHelper {
     body.append(" </p> ");
     body.append("  ");
     body.append(" <p> ");
-    body.append("   Please <a href=\"https://manage.truconnect.com/truconnect/login\">log in</a> and correct the issue at your earliest convenience or contact TruConnect customer service at 1-855-878-2666. ");
+    body.append("   Please <a href=\"https://account.webonthego.com/login\">log in</a> and correct the issue at your earliest convenience or contact Web on the Go customer service at 1-855-932-6646. ");
     body.append(" </p> ");
     body.append(" <p> ");
-    body.append("   Thank you for choosing TruConnect for your wireless and data needs. We value your business and look forward to serving you! ");
+    body.append("   Thank you for choosing Web on the Go for your wireless and data needs. We value your business and look forward to serving you! ");
     body.append(" </p> ");
 
     return body.toString();

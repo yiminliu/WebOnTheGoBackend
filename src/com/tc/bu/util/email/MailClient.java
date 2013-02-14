@@ -16,13 +16,13 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
 
 public class MailClient {
-  public static final String SYSTEM_SENDER = "no-reply@truconnect.com";
-  public static final Recipient RECIPIENT_SUPPORT = new Recipient("TruConnect", "Admin", "", "dta@telscape.net");
+  public static final String SYSTEM_SENDER = "no-reply@telscape.net";
+  //public static final Recipient RECIPIENT_SUPPORT = new Recipient("WebontheGo", "Admin", "", "dta@telscape.net");
+ // public static final Recipient RECIPIENT_SUPPORT = new Recipient("WebontheGo", "Admin", "", "WOTG_Alerts@telscape.net");
+  public static final Recipient RECIPIENT_SUPPORT = new Recipient("WebontheGo", "Admin", "", "yliu@telscape.net");
 
   // TSCP Mail Server
-  // public static final String smtpHost = "209.127.162.26";
-  // TruConnect Mail Server
-  public static final String smtpHost = "209.127.161.5";
+  public static final String smtpHost = "209.127.162.26";
   Vector<Recipient> mRecipientList;
   Vector<Recipient> bccList;
 
@@ -34,11 +34,10 @@ public class MailClient {
     mRecipientList = new Vector<Recipient>();
     bccList = new Vector<Recipient>();
     addBccRecipient(RECIPIENT_SUPPORT);
-    Recipient recipient = new Recipient("Peter", "Maas", "", "peter.maas@truconnect.com");
+    Recipient recipient = new Recipient("Yimin", "Liu", "", "yliu@telscape.net");
     addBccRecipient(recipient);
-
-    recipient = new Recipient("Joseph", "Holop", "", "jholop@telscape.net");
-    addBccRecipient(recipient);
+    //recipient = new Recipient("Joseph", "Holop", "", "jholop@telscape.net");
+    //addBccRecipient(recipient);
   }
 
   public MailClient(Recipient iRecipient) {
@@ -91,7 +90,7 @@ public class MailClient {
     // set the from and to address
     InternetAddress addressFrom = new InternetAddress(from);
     try {
-      addressFrom.setPersonal("TruConnect");
+      addressFrom.setPersonal("WebontheGo");
     } catch (UnsupportedEncodingException ue_ex) {
       ue_ex.printStackTrace();
     }
@@ -139,7 +138,7 @@ public class MailClient {
         throw send_ex;
       }
       if (validVectorAddressList == null || validVectorAddressList.isEmpty()) {
-        Recipient lRecipient = new Recipient(null, null, null, "dta@telscape.net");
+        Recipient lRecipient = new Recipient(null, null, null, "WOTG_Alerts@telscape.net");
         validVectorAddressList.add(lRecipient);
         String recipientList = "Exception Message :: " + send_ex.getMessage() + "\n\n";
         recipientList += "Unaltered Recipient List :: \n";
@@ -211,7 +210,7 @@ public class MailClient {
           toList.remove(invalidAddressList[i].toString());
         }
       } else if (toList.isEmpty()) {
-        toList.add("omssupport@telscape.net");
+          toList.add("WOTGalert@telscape.net");
         // send(from,toList,subject,body);
       } else {
         throw a;
