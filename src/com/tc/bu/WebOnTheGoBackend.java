@@ -5,7 +5,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -46,7 +46,6 @@ public class WebOnTheGoBackend {
   private static final String EMAIL_ERROR = "WOTG_Alerts@telscape.net";
   
   private static final Logger logger = LoggerFactory.getLogger(WebOnTheGoBackend.class);
-  
   private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
   private static final SimpleDateFormat legibleDate = new SimpleDateFormat("MM/dd/yyyy");
   private static final DecimalFormat df = new DecimalFormat("0.00");
@@ -93,32 +92,46 @@ public class WebOnTheGoBackend {
    */
   private void chargeAccounts(List<Account> accountList) {
 	
+	if(accountList == null || accountList.size() == 0){
+	   logger.info("accountList is empty, No account to topup");
+	   System.exit(0);
+    }
 	Customer customer = null;	  
 	com.tscp.mvne.Account tscpMvneAccount = null;
-	for (Account account : accountList) {
+	int defaultPaymentId = -1;            
+    Double chargeAmount = null;
+    boolean failureNotificationSent = false;
+    for (Account account : accountList) {
       try {
           customer = getCustomerInfo(account);
           tscpMvneAccount = getAccount(account.getAccountNo());
-          int defaultPaymentId = getCustomerPaymentDefault(customer);            
-          Double chargeAmount = determinCustomerTopUpAmount(customer, tscpMvneAccount);
+          defaultPaymentId = getCustomerPaymentDefault(customer);            
+          chargeAmount = determinCustomerTopUpAmount(customer, tscpMvneAccount);
           try {
               makePayment(customer, defaultPaymentId, tscpMvneAccount, null, df.format(chargeAmount));
           } 
           catch (PaymentException paymentEx) {
-        	  sendPaymentFailureNotification(tscpMvneAccount, customer, account, defaultPaymentId, chargeAmount, paymentEx); 
+             	 sendPaymentFailureNotification(tscpMvneAccount, customer, account, defaultPaymentId, chargeAmount, paymentEx); 
+             	 failureNotificationSent = true;
           }      
       } 
       catch (CustomerException custEx) {
-            logger.warn("Skipping Account " + account.getAccountNo() + "Error was " + custEx.getMessage(), custEx);
+            logger.error("Skipping Account " + account.getAccountNo() + "Error was " + custEx.getMessage(), custEx);
             //we may need to notify the error to a technical group
-      }
+            if(failureNotificationSent == false)
+            try{
+               sendPaymentFailureNotification(tscpMvneAccount, customer, account, defaultPaymentId, chargeAmount, new PaymentException(custEx.getMessage())); 
+               failureNotificationSent = true;
+            }
+            catch(Exception e){}
+      }  
       logger.info("Done with Account {}", account.getAccountNo());
     }    
   }
 
   /****** This method is used to charge topup for a given account number ******/
   private void manualChargeAccount(int accountNo) {
-	  List<Account> accountList = Collections.emptyList();  
+	  List<Account> accountList = new ArrayList<Account>();  
       Account acct = new Account();
 	  acct.setAccountNo(accountNo);
 	  accountList.add(acct);
@@ -205,14 +218,14 @@ public class WebOnTheGoBackend {
   private void makePayment(Customer customer, int paymentId, com.tscp.mvne.Account account, CreditCard creditCard, String amount)
       throws PaymentException {
      //logger.info("Making payment for CustomerId " + customer.getId() + " against Pmt ID " + paymentId + " in the Amount of $" + df.format(amount) + ".");
-     logger.info("Making payment for account {}, in the Amount of ${}. ", account.getAccountNo(), df.format(amount));
+     //logger.info("Making payment for account {}, in the Amount of ${}. ", account.getAccountNo(), df.format(amount));
      String sessionid = "CID" + customer.getId() + "T" + getTimeStamp() + "AUTO";
      PaymentUnitResponse response = null;
      try {
-        response = port.submitPaymentByPaymentId(sessionid, customer, paymentId, account, amount);
+    //    response = port.submitPaymentByPaymentId(sessionid, customer, paymentId, account, amount);
      } 
      catch (WebServiceException wse) {
-       logger.warn("WebService Exception thrown {} ", wse.getMessage());
+       logger.warn("WebService Exception occured: {} ", wse.getMessage());
        // will catch this exception at main()
        if (wse.getMessage().indexOf("Attempted to read or write protected memory") >= 0) {
          throw wse;
@@ -299,10 +312,19 @@ public class WebOnTheGoBackend {
   private void sendPaymentFailureNotification(com.tscp.mvne.Account tscpMvneAccount, Customer customer, Account account,
 		                                      int defaultPaymentId, Double chargeAmount, PaymentException paymentEx) 
                                               throws CustomerException {
+	  String remainingBalance = "";
+      CreditCard paymentInfo = null;
+      String paymentMethod ="";
+    	  
      logger.info("Sending failure notification to {}", EMAIL_ERROR);
-     String remainingBalance = tscpMvneAccount.getBalance();
-     CreditCard paymentInfo = getPaymentMethod(customer.getId(), defaultPaymentId);
-     String paymentMethod = determineCreditCardType(paymentInfo.getCreditCardNumber().substring(0, 1));
+     try {
+        remainingBalance = tscpMvneAccount.getBalance();
+        paymentInfo = getPaymentMethod(customer.getId(), defaultPaymentId);
+        paymentMethod = determineCreditCardType(paymentInfo.getCreditCardNumber().substring(0, 1));
+     }
+     catch(Exception e){
+    	 logger.warn("Exception orrcured: {}", e.getMessage());
+     }
      String body = EmailHelper.getPaymentFailureBody(tscpMvneAccount.getFirstname(), 
     		                                         Integer.toString(tscpMvneAccount.getAccountNo()), 
     		                                         account.getMdn(), "", chargeAmount.toString(), 
@@ -321,7 +343,8 @@ public class WebOnTheGoBackend {
 	 recipient.setEmailAddress(emailAddress);
 	 recipients.add(recipient);
 	 try {
-	     body = EmailHelper.getEmailHeader() + body + EmailHelper.getEmailFooter();
+	     //body = EmailHelper.getEmailHeader() + body + EmailHelper.getEmailFooter();
+	     body = EmailHelper.getEmailHeader() + body;
 	     mail.postMail(recipients, subject, body, MailClient.SYSTEM_SENDER);
 	 } 
 	 catch (Exception ex) {
